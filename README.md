@@ -162,9 +162,33 @@ and I created credentials to be able to securly login to dockerhub to push image
 ![image](https://github.com/gAhmed-Elmelegy/go-app-intern/assets/136341359/8cc4382a-7426-47a8-9572-a8fb2474e969)
 This is the pipeline output after build it 
 ![image](https://github.com/gAhmed-Elmelegy/go-app-intern/assets/136341359/331a87a3-9af8-40d8-b92a-22c8e5fd20fd)
-
 ### Push image to dockerhub
 ![image](https://github.com/gAhmed-Elmelegy/go-app-intern/assets/136341359/280b1103-13eb-40f5-8163-98cdb87ebfb5)
+### Catch error
+what benifts of that?
+- The stage will be marked as failed (stageResult: 'FAILURE').
+- The build result will be marked as failed (buildResult: 'FAILURE').
+- The error message will be displayed in the Jenkins logs.
+```bash
+        stage('Build image') {
+            steps {
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    sh(script: """
+                        docker images
+                        docker build -t ahmedelmelegy3570/app-multistage .
+                    """)
+                }
+            }
+        }
+        stage('Push image') {
+            steps {
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    sh(script: """
+                        docker push r ahmedelmelegy3570/app-multistage
+                    """)
+                }
+```
+![image](https://github.com/gAhmed-Elmelegy/go-app-intern/assets/136341359/2f214ba7-3435-4cac-8d2d-66bccb641eaa)
 ## kubernetes and helm
 app-deployment.yaml:
 Added support for multiple replicas using a configurable value.
