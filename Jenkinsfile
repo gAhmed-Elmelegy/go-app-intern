@@ -36,12 +36,5 @@ pipeline {
             }
         }
     }
-
-    post {
-        failure {
-            mail to: REPORT_EMAIL,
-                 subject: "Build Failed: ${env.JOB_NAME}",
-                 body: "The build of ${env.JOB_NAME} has failed. Please check the Jenkins logs for more details."
-        }
     }
 }
